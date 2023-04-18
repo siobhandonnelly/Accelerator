@@ -16,3 +16,6 @@ nature_of_work <- janitor::clean_names(nature_of_work)
 
 typeof("f_acyear")
 parse_factor(c("2016/17", "2017/18", "2018/19"))
+
+library(usethis)
+?use_github

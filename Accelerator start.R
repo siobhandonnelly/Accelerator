@@ -32,20 +32,37 @@ nature_of_work <- janitor::clean_names(nature_of_work)
 View(nature_of_work)
 
 
-nature_of_work %>%
+new_df <- nature_of_work %>%
   mutate(work_mean_num = case_when(f_wrkmean %in% ("Strongly agree") ~ 5,
                                    f_wrkmean %in% ("Agree")  ~ 4 ,
                                    f_wrkmean %in% ("Neither agree nor disagree") ~ 3 ,
                                    f_wrkmean %in% ("Disagree") ~ 2 ,
                                    f_wrkmean %in% ("Strongly disagree") ~ 1 
                                    ))
+
+new_df <- nature_of_work %>%
+  mutate(work_skills_num = case_when(f_wrkskills %in% ("Strongly agree") ~ 5,
+                                   f_wrkskills %in% ("Agree")  ~ 4 ,
+                                   f_wrkskills %in% ("Neither agree nor disagree") ~ 3 ,
+                                   f_wrkskills %in% ("Disagree") ~ 2 ,
+                                   f_wrkskills %in% ("Strongly disagree") ~ 1 
+                                   ))
+
+new_df <- nature_of_work %>%
+  mutate(work_ontrack_num = case_when(f_wrkontrack %in% ("Strongly agree") ~ 5,
+                                   f_wrkontrack %in% ("Agree")  ~ 4 ,
+                                   f_wrkontrack %in% ("Neither agree nor disagree") ~ 3 ,
+                                   f_wrkontrack %in% ("Disagree") ~ 2 ,
+                                   f_wrkontrack %in% ("Strongly disagree") ~ 1 
+                                    ))
 typeof("work_mean_num")
+View("work_mean_num")
 
 
-# ggplot(data = nature_of_work) +
-#        geom_point(mapping = aes(x = f_acyear,
-#                                y = f_zcohort)
-#                   )
+(gg1 <- ggplot(data = nature_of_work) +
+        geom_point(mapping = aes(x = f_acyear,
+                                y = f_zcohort)
+                   ))
 # 
 # ggplot(data = nature_of_work) +
 #        geom_point(mapping = aes(x = f_acyear,

@@ -74,6 +74,7 @@ now_update2 <- subset(nature_of_work, study_mode == 1 | work_ontrack_num !=NA | 
   geom_col(mapping = aes(x = as.factor(f_zcohort),
                          y = mean(danow),
                          fill = f_xwrk2020soc1),
+           na.rm = FALSE,
            position = position_dodge()
   ))
 # ggplot(data = nature_of_work) +

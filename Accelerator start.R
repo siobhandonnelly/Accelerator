@@ -28,6 +28,8 @@ View(nature_of_work)
 
 View(nature_of_work)
 
+nature_of_work$f_zcohort <- as.factor(nature_of_work$f_zcohort)
+
 nature_of_work <- nature_of_work %>%
   mutate(study_mode = case_when(f_xqmode01 %in% ("Part-time") ~ 2 ,
                                    f_xqmode01 %in% ("Full-time") ~ 1 
@@ -68,11 +70,22 @@ now_update2 <- distinct(nature_of_work, f_zanonymous, .keep_all = TRUE)
 now_update2 <- subset(nature_of_work, study_mode == 1 | work_ontrack_num !=NA | work_skills_num!=NA | work_mean_num!=NA)
 
 
+now_update3 <- now_update2 %>% 
+  group_by(f_zcohort, f_xwrk2020soc1) %>% 
+  mutate(mean_danow = mean(danow, na.rm = TRUE))
+
+new_plot <- ggplot(data = now_update3) +
+  geom_col(mapping = aes(x = f_zcohort,
+                         y = mean_danow,
+                         fill = f_xwrk2020soc1),
+           position = position_dodge()
+  )
+
 #creating a plot of fairwork score by SOC code and year
 
 (gg2 <- ggplot(data = now_update2) +
   geom_col(mapping = aes(x = as.factor(f_zcohort),
-                         y = mean(danow),
+                         y = mean(danow, na.rm = TRUE),
                          fill = f_xwrk2020soc1),
            position = position_dodge()
   ))

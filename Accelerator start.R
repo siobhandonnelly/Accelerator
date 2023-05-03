@@ -21,8 +21,6 @@ nature_of_work <- read_csv("UKHSA dataset.csv")
 
 #Taking a look at the dataset 
 View(nature_of_work)
-#Cleaning up the variable names
-nature_of_work <- janitor::clean_names(nature_of_work)
 #Starting to amend variable types. Changing the f_acyear variable to a factor
 
 # typeof("f_acyear")
@@ -31,8 +29,12 @@ nature_of_work <- janitor::clean_names(nature_of_work)
 
 View(nature_of_work)
 
+nature_of_work <- nature_of_work %>%
+  mutate(study_mode = case_when(f_xqmode01 %in% ("Part-time") ~ 2 ,
+                                   f_xqmode01 %in% ("Full-time") ~ 1 
+  ))
 
-new_df <- nature_of_work %>%
+nature_of_work <- nature_of_work %>%
   mutate(work_mean_num = case_when(f_wrkmean %in% ("Strongly agree") ~ 5,
                                    f_wrkmean %in% ("Agree")  ~ 4 ,
                                    f_wrkmean %in% ("Neither agree nor disagree") ~ 3 ,
@@ -40,7 +42,7 @@ new_df <- nature_of_work %>%
                                    f_wrkmean %in% ("Strongly disagree") ~ 1 
                                    ))
 
-new_df <- nature_of_work %>%
+nature_of_work <- nature_of_work %>%
   mutate(work_skills_num = case_when(f_wrkskills %in% ("Strongly agree") ~ 5,
                                    f_wrkskills %in% ("Agree")  ~ 4 ,
                                    f_wrkskills %in% ("Neither agree nor disagree") ~ 3 ,
@@ -48,7 +50,7 @@ new_df <- nature_of_work %>%
                                    f_wrkskills %in% ("Strongly disagree") ~ 1 
                                    ))
 
-new_df <- nature_of_work %>%
+nature_of_work <- nature_of_work %>%
   mutate(work_ontrack_num = case_when(f_wrkontrack %in% ("Strongly agree") ~ 5,
                                    f_wrkontrack %in% ("Agree")  ~ 4 ,
                                    f_wrkontrack %in% ("Neither agree nor disagree") ~ 3 ,
@@ -59,10 +61,16 @@ typeof("work_mean_num")
 View("work_mean_num")
 
 
-(gg1 <- ggplot(data = nature_of_work) +
-        geom_point(mapping = aes(x = f_acyear,
-                                y = f_zcohort)
-                   ))
+
+
+now_update2 <- distinct(nature_of_work, f_zanonymous, .keep_all = TRUE)
+
+now_update2 <- subset(nature_of_work, study_mode == 1 )
+
+#(gg1 <- ggplot(data = nature_of_work) +
+#        geom_point(mapping = aes(x = f_acyear,
+#                                y = f_zcohort)
+#                   ))
 # 
 # ggplot(data = nature_of_work) +
 #        geom_point(mapping = aes(x = f_acyear,

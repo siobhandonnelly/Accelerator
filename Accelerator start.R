@@ -15,10 +15,9 @@ library(dplyr)
 #Loading in the dataset
 nature_of_work <- read_csv("UKHSA dataset.csv")
 
-#Trying to load in data with nulls de\lt with but code not working
-#nature_of_work <- read_csv("UKHSA dataset.csv"), 
-#                           na = c("U", "Unknown (IMD)", "Not applicable (IMD)", "Not applicable (NIMMD)", "Unknown (NIMDM)" ,"Not applicable (SIMD)" ,"Unknown (SIMD)", "Not applicable (WIMD)", "Unknown (WIMD)","Z0 - Missing data" ,"NA" , "Not known, "'Not known/Not applicable'", "'Not applicable'", "'03'", "'-1'","'*'", ".", "", "'NULL'"))
-
+#Trying to load in data with nulls de\lt with
+nature_of_work <- read_csv(("UKHSA dataset.csv"), 
+                           na = c("U", "Z0 - Missing data" ,"NA" ,"Not applicable", "-1","*",".", "", "'NULL'"))
 #Taking a look at the dataset 
 View(nature_of_work)
 #Starting to amend variable types. Changing the f_acyear variable to a factor
@@ -81,3 +80,40 @@ now_update2 <- subset(nature_of_work, study_mode == 1 | work_ontrack_num !=NA | 
 #        geom_point(mapping = aes(x = f_acyear,
 #                                 y = f_zreversedec)
 #                   )    
+(gg3 <- ggplot(data = now_update2) +
+    geom_col(mapping = aes(x = as.factor(f_zcohort),
+                           y = danow,
+                           fill = f_xempbasis),
+             position = position_dodge()
+    ))
+
+(gg4 <- ggplot(data = now_update2) +
+    geom_col(mapping = aes(x = as.factor(f_zcohort),
+                           y = danow,
+                           fill = f_xglev501),
+             position = position_dodge()
+    ))
+(gg5 <- ggplot(data = now_update2) +
+    geom_col(mapping = aes(x = as.factor(f_zcohort),
+                           y = danow,
+                           fill = f_xethnic01),
+             position = position_dodge()
+    ))
+#variables to consider plotting
+#f_pared
+#f_sexid
+#f_xclass01
+#f_xdomgr01
+#f_ethnic01
+#f_xglev501
+#f_zstudis_marker
+#f_xempbasis
+
+
+
+
+
+
+
+
+

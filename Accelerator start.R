@@ -24,8 +24,8 @@ View(nature_of_work)
 #Starting to amend variable types. Changing the f_acyear variable to a factor
 
 # typeof("f_acyear")
-# 
-# parse_factor(c("2016/17", "2017/18", "2018/19"))
+
+# f_acyear <- parse_factor(c("2016/17", "2017/18", "2018/19"))
 
 View(nature_of_work)
 
@@ -57,21 +57,26 @@ nature_of_work <- nature_of_work %>%
                                    f_wrkontrack %in% ("Disagree") ~ 2 ,
                                    f_wrkontrack %in% ("Strongly disagree") ~ 1 
                                     ))
-typeof("work_mean_num")
-View("work_mean_num")
 
+nature_of_work <- nature_of_work %>%
+  mutate(danow = ((work_ontrack_num + work_skills_num + work_mean_num) / 3))
+          
 
-
-
+#creating a data frame that containsonly distinct individuals
 now_update2 <- distinct(nature_of_work, f_zanonymous, .keep_all = TRUE)
 
-now_update2 <- subset(nature_of_work, study_mode == 1 )
+#restricting the data fram to those who studied full time and responded to all three GV questions
+now_update2 <- subset(nature_of_work, study_mode == 1 | work_ontrack_num !=NA | work_skills_num!=NA | work_mean_num!=NA)
 
-#(gg1 <- ggplot(data = nature_of_work) +
-#        geom_point(mapping = aes(x = f_acyear,
-#                                y = f_zcohort)
-#                   ))
-# 
+
+#creating a plot of fairwork score by SOC code and year
+
+(gg2 <- ggplot(data = now_update2) +
+  geom_col(mapping = aes(x = as.factor(f_zcohort),
+                         y = mean(danow),
+                         fill = f_xwrk2020soc1),
+           position = position_dodge()
+  ))
 # ggplot(data = nature_of_work) +
 #        geom_point(mapping = aes(x = f_acyear,
 #                                 y = f_zreversedec)

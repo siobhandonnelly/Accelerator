@@ -81,12 +81,34 @@ new_plot <- ggplot(data = now_update3) +
            position = position_dodge()
   )
 
+[16:00] Denise Melchin
+
+
+
+
+plot_creation <- function(df, colName) {
+    df %>%
+    group_by(f_zcohort, df[[colName]]) %>%
+    mutate(mean_danow = mean(danow, na.rm = TRUE)) %>% 
+    ggplot() +
+      geom_col(
+       mapping = aes(x = f_zcohort,
+                     y = mean_danow,
+                      fill = df[[colName]]),
+       position = position_dodge()
+    )
+}
+
+graph1 <- plot_creation(now_update2,"f_xwrk2020soc1")
+graph1
+
 #creating a plot of fairwork score by SOC code and year
 
 (gg2 <- ggplot(data = now_update2) +
-  geom_col(mapping = aes(x = as.factor(f_zcohort),
+  geom_col(mapping = aes(x = f_zcohort,
                          y = mean(danow, na.rm = TRUE),
-                         fill = f_xwrk2020soc1),
+                         fill = f_xwrk2020soc1,
+                         group = f_xwrk2020soc1 ),
            position = position_dodge()
   ))
 # ggplot(data = nature_of_work) +

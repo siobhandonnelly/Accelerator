@@ -74,60 +74,53 @@ now_update3 <- now_update2 %>%
   group_by(f_zcohort, f_xwrk2020soc1) %>% 
   mutate(mean_danow = mean(danow, na.rm = TRUE))
 
-new_plot <- ggplot(data = now_update3) +
-  geom_col(mapping = aes(x = f_zcohort,
-                         y = mean_danow,
-                         fill = f_xwrk2020soc1),
-           position = position_dodge()
-  )
 
-#creating a plot of fairwork score by SOC code and year
+plot_creation <- function(df, colName) {
+  df %>%
+    group_by(f_zcohort, df[[colName]]) %>%
+    mutate(mean_danow = mean(danow, na.rm = TRUE)) %>% 
+    ggplot() +
+    geom_col(
+      mapping = aes(x = f_zcohort,
+                    y = mean_danow,
+                    fill = df[[colName]]),
+      position = position_dodge()
+    )
+}
 
-(gg2 <- ggplot(data = now_update2) +
-  geom_col(mapping = aes(x = as.factor(f_zcohort),
-                         y = mean(danow, na.rm = TRUE),
-                         fill = f_xwrk2020soc1),
-           na.rm = FALSE,
-           position = position_dodge()
-  ))
-# ggplot(data = nature_of_work) +
-#        geom_point(mapping = aes(x = f_acyear,
-#                                 y = f_zreversedec)
-#                   )    
-(gg3 <- ggplot(data = now_update2) +
-    geom_col(mapping = aes(x = as.factor(f_zcohort),
-                           y = danow,
-                           fill = f_xempbasis),
-             position = position_dodge()
-    ))
+graph1 <- plot_creation(now_update2,"f_xwrk2020soc1")
+graph1
 
-(gg4 <- ggplot(data = now_update2) +
-    geom_col(mapping = aes(x = as.factor(f_zcohort),
-                           y = danow,
-                           fill = f_xglev501),
-             position = position_dodge()
-    ))
-(gg5 <- ggplot(data = now_update2) +
-    geom_col(mapping = aes(x = as.factor(f_zcohort),
-                           y = danow,
-                           fill = f_xethnic01),
-             position = position_dodge()
-    ))
-#variables to consider plotting
+graph2 <- plot_creation(now_update2,"f_xempbasis")
+graph2
+
+graph3 <- plot_creation(now_update2,"f_xglev501")
+graph3
+
+graph4 <- plot_creation(now_update2,"f_xclass01")
+graph4
+
+graph5 <- plot_creation(now_update2,"f_xdomgr01")
+graph5
+
+
+
+#variables to consider having as filters
 #f_pared
 #f_sexid
-#f_xclass01
-#f_xdomgr01
+#instid
 #f_ethnic01
-#f_xglev501
 #f_zstudis_marker
-#f_xempbasis
 
 
 
 
 
-
+# outstanding issues 
+# Rounding to 5  round_any(now_update3, 5) ?
+#renaming columnnam
+# chanigng colour
+#reordering variables
 
 
 

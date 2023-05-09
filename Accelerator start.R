@@ -30,6 +30,10 @@ View(nature_of_work)
 
 nature_of_work$f_zcohort <- as.factor(nature_of_work$f_zcohort)
 
+#Attempting to order the SOCcode variable
+nature_of_work$f_xwrk2020soc1 <- as.factor(nature_of_work$f_xwrk2020soc1)
+
+
 nature_of_work <- nature_of_work %>%
   mutate(study_mode = case_when(f_xqmode01 %in% ("Part-time") ~ 2 ,
                                    f_xqmode01 %in% ("Full-time") ~ 1 
@@ -70,6 +74,9 @@ now_update2 <- distinct(nature_of_work, f_zanonymous, .keep_all = TRUE)
 now_update2 <- subset(nature_of_work, study_mode == 1 | work_ontrack_num !=NA | work_skills_num!=NA | work_mean_num!=NA)
 
 
+SOC_Code <- c("Managers, directors and senior officials", "Professional occupations", "Associate professional and technical occupations", "Administrative and secretarial occupations", "Skilled trades occupations", "Caring, leisure and other service occupations", "Sales and customer service occupations", "Process plant and machine operatives", "Elementary occupations")
+
+
 now_update3 <- now_update2 %>% 
   group_by(f_zcohort, f_xwrk2020soc1) %>% 
   mutate(mean_danow = mean(danow, na.rm = TRUE))
@@ -85,8 +92,22 @@ plot_creation <- function(df, colName) {
                     y = mean_danow,
                     fill = df[[colName]]),
       position = position_dodge()
-    )
+    ) +
+    scale_fill_manual(values = c("#1F4388", 
+                                 "#83C7BC", 
+                                 "#1E355E",
+                                 "#6A86B8",
+                                 "#A93439",
+                                 "#CE3162",
+                                 "#E57D3A",
+                                 "#4EA585",
+                                 "#BBB332",
+                                 "#E8D77E")
+    ) # adding colours
 }
+
+
+
 
 graph1 <- plot_creation(now_update2,"f_xwrk2020soc1")
 graph1
@@ -115,12 +136,8 @@ graph5
 
 
 
-
+#deal with NA / Not know
 # outstanding issues 
 # Rounding to 5  round_any(now_update3, 5) ?
 #renaming columnnam
-# chanigng colour
 #reordering variables
-
-
-

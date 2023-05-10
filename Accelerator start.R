@@ -104,7 +104,13 @@ plot_creation <- function(df, colName) {
 
 
 # Chart 1: Showing the design and nature of work score by the graduates Standard occupational code
-graph1 <- plot_creation(now_update2,"f_xwrk2020soc1")
+graph1 <- plot_creation(now_update2,"f_xwrk2020soc1") +
+  labs(x = "Graduation Year", # Labels
+       y = "Mean design and nature of work score",
+       fill  = "Standard Occupational Code", # Legend Label
+       title = "Graduates Design and nature of work score by SOC group",
+       subtitle = "",
+       caption = "")
 graph1
 
 

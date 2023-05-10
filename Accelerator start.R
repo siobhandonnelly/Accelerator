@@ -25,9 +25,11 @@ nature_of_work$f_zcohort <- as.factor(nature_of_work$f_zcohort)
 #Attempting to order the SOCcode variable
 typeof("f_xwrk2020soc1")
 
-nature_of_work$f_xwrk2020soc1 <- as.factor(nature_of_work$f_xwrk2020soc1)
+nature_of_work$f_xwrk2020soc1 <- factor(nature_of_work$f_xwrk2020soc1, levels = c("Managers, directors and senior officials", "Professional occupations", "Associate professional and technical occupations", "Administrative and secretarial occupations", "Skilled trades occupations", "Caring, leisure and other service occupations", "Sales and customer service occupations", "Process plant and machine operatives", "Elementary occupations"))
 
-SOC_Code <- c("Managers, directors and senior officials", "Professional occupations", "Associate professional and technical occupations", "Administrative and secretarial occupations", "Skilled trades occupations", "Caring, leisure and other service occupations", "Sales and customer service occupations", "Process plant and machine operatives", "Elementary occupations")
+
+
+nature_of_work$f_xempbasis <- factor(nature_of_work$f_xempbasis, levels = c("On a permanent/open ended contract", "On a fixed-term contract lasting 12 months or longer","On a fixed-term contract lasting less than 12 months","Temping (including supply teaching)","On a zero hours contract","Volunteering","On an internship","Other","Not known"))
 
 
 
@@ -71,10 +73,10 @@ now_update2 <- distinct(nature_of_work, f_zanonymous, .keep_all = TRUE)
 now_update2 <- subset(nature_of_work, study_mode == 1 | work_ontrack_num !=NA | work_skills_num!=NA | work_mean_num!=NA)
 
 
-
-now_update3 <- now_update2 %>% 
-  group_by(f_zcohort, f_xwrk2020soc1) %>% 
-  mutate(mean_danow = mean(danow, na.rm = TRUE))
+# 
+# now_update3 <- now_update2 %>% 
+#   group_by(f_zcohort, f_xwrk2020soc1) %>% 
+#   mutate(mean_danow = mean(danow, na.rm = TRUE))
 
 
 plot_creation <- function(df, colName) {
@@ -86,9 +88,10 @@ plot_creation <- function(df, colName) {
       mapping = aes(x = f_zcohort,
                     y = mean_danow,
                     fill = df[[colName]]),
-      position = position_dodge()
+      position = position_dodge(),
     ) +
-    scale_fill_manual(values = c("#1F4388", 
+   # scale_y_continuous(limits=c(1,5)) +
+     scale_fill_manual(values = c("#1F4388", 
                                  "#83C7BC", 
                                  "#1E355E",
                                  "#6A86B8",
@@ -105,6 +108,7 @@ plot_creation <- function(df, colName) {
 
 # Chart 1: Showing the design and nature of work score by the graduates Standard occupational code
 graph1 <- plot_creation(now_update2,"f_xwrk2020soc1") +
+
   labs(x = "Graduation Year", # Labels
        y = "Mean design and nature of work score",
        fill  = "Standard Occupational Code", # Legend Label
@@ -116,7 +120,14 @@ graph1
 
 # Chart 2: Showing the design and nature of work score by the graduates employment basis
 
-graph2 <- plot_creation(now_update2,"f_xempbasis")
+graph2 <- plot_creation(now_update2,"f_xempbasis") +
+  
+  labs(x = "Graduation Year", # Labels
+       y = "Mean design and nature of work score",
+       fill  = "Employment Basis", # Legend Label
+       title = "Graduates Design and nature of work score by Employment Basis",
+       subtitle = "",
+       caption = "")
 graph2
 
 
@@ -150,6 +161,5 @@ graph5
 
 
 # Deal with NA / Not known in variables - the code at the start does not appear to be working
-# renaming columnname in plots
 # reordering variables - SOC
 # Charts not starting at zero

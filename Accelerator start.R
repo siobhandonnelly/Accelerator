@@ -12,26 +12,23 @@ library(dplyr)
 
 # use_github(protocol = 'https', auth_token = Sys.getenv("GITHUB_PAT"))
 
-#Loading in the dataset
-nature_of_work <- read_csv("UKHSA dataset.csv")
 
-#Trying to load in data with nulls de\lt with
+
+#Trying to load in data with nulls dealt with
 nature_of_work <- read_csv(("UKHSA dataset.csv"), 
-                           na = c("U", "Z0 - Missing data" ,"NA" ,"Not applicable", "-1","*",".", "", "'NULL'"))
+                           na = c("U", "Z0 - Missing data" ,"NA", "Not Known" ,"Not applicable", "-1","*",".", "", "'NULL'"))
 #Taking a look at the dataset 
-View(nature_of_work)
-#Starting to amend variable types. Changing the f_acyear variable to a factor
-
-# typeof("f_acyear")
-
-# f_acyear <- parse_factor(c("2016/17", "2017/18", "2018/19"))
-
 View(nature_of_work)
 
 nature_of_work$f_zcohort <- as.factor(nature_of_work$f_zcohort)
 
 #Attempting to order the SOCcode variable
+typeof("f_xwrk2020soc1")
+
 nature_of_work$f_xwrk2020soc1 <- as.factor(nature_of_work$f_xwrk2020soc1)
+
+SOC_Code <- c("Managers, directors and senior officials", "Professional occupations", "Associate professional and technical occupations", "Administrative and secretarial occupations", "Skilled trades occupations", "Caring, leisure and other service occupations", "Sales and customer service occupations", "Process plant and machine operatives", "Elementary occupations")
+
 
 
 nature_of_work <- nature_of_work %>%
@@ -74,8 +71,6 @@ now_update2 <- distinct(nature_of_work, f_zanonymous, .keep_all = TRUE)
 now_update2 <- subset(nature_of_work, study_mode == 1 | work_ontrack_num !=NA | work_skills_num!=NA | work_mean_num!=NA)
 
 
-SOC_Code <- c("Managers, directors and senior officials", "Professional occupations", "Associate professional and technical occupations", "Administrative and secretarial occupations", "Skilled trades occupations", "Caring, leisure and other service occupations", "Sales and customer service occupations", "Process plant and machine operatives", "Elementary occupations")
-
 
 now_update3 <- now_update2 %>% 
   group_by(f_zcohort, f_xwrk2020soc1) %>% 
@@ -103,23 +98,35 @@ plot_creation <- function(df, colName) {
                                  "#4EA585",
                                  "#BBB332",
                                  "#E8D77E")
-    ) # adding colours
+    ) # adding HESA colours
 }
 
 
 
-
+# Chart 1: Showing the design and nature of work score by the graduates Standard occupational code
 graph1 <- plot_creation(now_update2,"f_xwrk2020soc1")
 graph1
+
+
+# Chart 2: Showing the design and nature of work score by the graduates employment basis
 
 graph2 <- plot_creation(now_update2,"f_xempbasis")
 graph2
 
+
+# Chart 3: Showing the design and nature of work score by the graduates level of study
+
 graph3 <- plot_creation(now_update2,"f_xglev501")
 graph3
 
+
+# Chart 4: Showing the design and nature of work score by the graduates class of degree attained
+
 graph4 <- plot_creation(now_update2,"f_xclass01")
 graph4
+
+
+# Chart 5: Showing the design and nature of work score by the graduates domicile
 
 graph5 <- plot_creation(now_update2,"f_xdomgr01")
 graph5
@@ -136,8 +143,7 @@ graph5
 
 
 
-#deal with NA / Not know
-# outstanding issues 
-# Rounding to 5  round_any(now_update3, 5) ?
-#renaming columnnam
-#reordering variables
+# Deal with NA / Not known in variables - the code at the start does not appear to be working
+# renaming columnname in plots
+# reordering variables - SOC
+# Charts not starting at zero

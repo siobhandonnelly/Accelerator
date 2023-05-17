@@ -2,12 +2,14 @@
 # install.packages("tidyverse", dependencies = TRUE, type = "win.binary")
 # install.packages("readxl", dependencies = TRUE, type = "win.binary")
 # install.packages("janitor", dependencies = TRUE, type = "win.binary")
+# install.packages("plotly", dependencies = TRUE, type = "win.binary")
 
 #Loading in the Tidyverse
 library(tidyverse)
 library(usethis)
 library(ggplot2)
 library(dplyr)
+library(plotly)
 ?use_github
 
 # use_github(protocol = 'https', auth_token = Sys.getenv("GITHUB_PAT"))
@@ -72,21 +74,18 @@ now_update2 <- distinct(nature_of_work, f_zanonymous, .keep_all = TRUE)
 now_update2 <- subset(nature_of_work, study_mode == 1 | work_ontrack_num !=NA | work_skills_num!=NA | work_mean_num!=NA)
 
 
-# 
-# now_update3 <- now_update2 %>% 
-#   group_by(f_zcohort, f_xwrk2020soc1) %>% 
-#   mutate(mean_danow = mean(danow, na.rm = TRUE))
-exclude_strings <- c("U", "Z0 - Missing data" ,"NA", "Not Known" ,"Not applicable", "-1","*",".", "", "NULL", "na")
 
 plot_creation <- function(df, colName) {
-  df %>%
-    group_by(f_zcohort, df[[colName]]) %>%
+ ndf <- df %>%
+    filter(!is.na(df[[colName]])) 
+ ndf %>% 
+    group_by(f_zcohort, ndf[[colName]]) %>%
     mutate(mean_danow = mean(danow, na.rm = TRUE)) %>% 
     ggplot() +
     geom_col(
       mapping = aes(x = f_zcohort,
                     y = mean_danow,
-                    fill = df[[colName]]),
+                    fill = ndf[[colName]]),
       position = position_dodge(),
     ) +
         coord_cartesian(ylim=c(1,5)) +
@@ -115,6 +114,11 @@ graph1 <- plot_creation(now_update2,"f_xwrk2020soc1") +
        caption = "")
 
 graph1
+
+#creating an interactive plot
+ggplotly(graph1)
+
+graph
 
 
 # Chart 2: Showing the design and nature of work score by the graduates employment basis
@@ -168,18 +172,25 @@ graph5 <- plot_creation(now_update2,"f_xdomgr01") +
        caption = "")
 graph5
 
+#working to try and replicate the above function but with creating a plot_ly chart. The code is not working yet. This is to see if there is a difference in speed between the two options
 
 
-#variables to consider having as filters
-#f_pared
-#f_sexid
-#instid
-#f_ethnic01
-#f_zstudis_marker
+plotly_creation <- function(df, colName) {
+  ndf <- df %>%
+    filter(!is.na(df[[colName]])) 
+  ndf %>% 
+    group_by(f_zcohort, ndf[[colName]]) %>%
+    summarize(mean_danow = mean(danow, na.rm = TRUE), .groups = "keep") %>% 
+    plot_ly(
+      x = ~f_zcohort,
+      y = ~mean_danow,
+      color = ~ndf[[colName]],
+      type = "bar"
+    ) %>%
+    layout(
+      yaxis = list(range = c(1, 5)),
+      colorway = c("#1F4388", "#83C7BC", "#1E355E", "#6A86B8", "#A93439", "#CE3162", "#E57D3A", "#4EA585", "#BBB332", "#E8D77E")
+    )
+}
+A <- plotly_creation(now_update2,"f_xwrk2020soc1") 
 
-
-
-
-# Deal with NA / Not known in variables - the code at the start does not appear to be working
-# reordering variables - SOC
-# Charts not starting at zero

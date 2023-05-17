@@ -15,8 +15,7 @@ library(dplyr)
 
 
 #Trying to load in data with nulls dealt with
-nature_of_work <- read_csv(("UKHSA dataset.csv"), 
-                           na = c("U", "Z0 - Missing data" ,"NA", "Not Known" ,"Not applicable", "-1","*",".", "", "'NULL'"))
+nature_of_work <- read_csv("UKHSA dataset.csv", na = c("U", "Z0 - Missing data" ,"NA", "Not Known" ,"Not applicable", "-1","*",".", "", "NULL"))
 #Taking a look at the dataset 
 View(nature_of_work)
 
@@ -77,7 +76,7 @@ now_update2 <- subset(nature_of_work, study_mode == 1 | work_ontrack_num !=NA | 
 # now_update3 <- now_update2 %>% 
 #   group_by(f_zcohort, f_xwrk2020soc1) %>% 
 #   mutate(mean_danow = mean(danow, na.rm = TRUE))
-
+exclude_strings <- c("U", "Z0 - Missing data" ,"NA", "Not Known" ,"Not applicable", "-1","*",".", "", "NULL", "na")
 
 plot_creation <- function(df, colName) {
   df %>%
@@ -90,8 +89,8 @@ plot_creation <- function(df, colName) {
                     fill = df[[colName]]),
       position = position_dodge(),
     ) +
-   # scale_y_continuous(limits=c(1,5)) +
-     scale_fill_manual(values = c("#1F4388", 
+        coord_cartesian(ylim=c(1,5)) +
+        scale_fill_manual(values = c("#1F4388", 
                                  "#83C7BC", 
                                  "#1E355E",
                                  "#6A86B8",
@@ -105,9 +104,8 @@ plot_creation <- function(df, colName) {
 }
 
 
-
 # Chart 1: Showing the design and nature of work score by the graduates Standard occupational code
-graph1 <- plot_creation(now_update2,"f_xwrk2020soc1") +
+graph1 <- plot_creation(now_update2,"f_xwrk2020soc1") + 
 
   labs(x = "Graduation Year", # Labels
        y = "Mean design and nature of work score",
@@ -115,6 +113,7 @@ graph1 <- plot_creation(now_update2,"f_xwrk2020soc1") +
        title = "Graduates Design and nature of work score by SOC group",
        subtitle = "",
        caption = "")
+
 graph1
 
 
@@ -133,19 +132,40 @@ graph2
 
 # Chart 3: Showing the design and nature of work score by the graduates level of study
 
-graph3 <- plot_creation(now_update2,"f_xglev501")
+graph3 <- plot_creation(now_update2,"f_xglev501") +
+  
+  labs(x = "Graduation Year", # Labels
+       y = "Mean design and nature of work score",
+       fill  = "Level of Study", # Legend Label
+       title = "Graduates Design and nature of work score by Level of Study",
+       subtitle = "",
+       caption = "")
 graph3
 
 
 # Chart 4: Showing the design and nature of work score by the graduates class of degree attained
 
-graph4 <- plot_creation(now_update2,"f_xclass01")
+graph4 <- plot_creation(now_update2,"f_xclass01") +
+  
+  labs(x = "Graduation Year", # Labels
+       y = "Mean design and nature of work score",
+       fill  = "Class of Degree", # Legend Label
+       title = "Graduates Design and nature of work score by Class of Degree",
+       subtitle = "",
+       caption = "")
 graph4
 
 
 # Chart 5: Showing the design and nature of work score by the graduates domicile
 
-graph5 <- plot_creation(now_update2,"f_xdomgr01")
+graph5 <- plot_creation(now_update2,"f_xdomgr01") +
+  
+  labs(x = "Graduation Year", # Labels
+       y = "Mean design and nature of work score",
+       fill  = "Employment Basis", # Legend Label
+       title = "Graduates Design and nature of work score by Employment Basis",
+       subtitle = "",
+       caption = "")
 graph5
 
 

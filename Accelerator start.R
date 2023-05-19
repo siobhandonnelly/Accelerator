@@ -115,11 +115,6 @@ graph1 <- plot_creation(now_update2,"f_xwrk2020soc1") +
 
 graph1
 
-#creating an interactive plot
-ggplotly(graph1)
-
-graph
-
 
 # Chart 2: Showing the design and nature of work score by the graduates employment basis
 
@@ -172,25 +167,29 @@ graph5 <- plot_creation(now_update2,"f_xdomgr01") +
        caption = "")
 graph5
 
-#working to try and replicate the above function but with creating a plot_ly chart. The code is not working yet. This is to see if there is a difference in speed between the two options
 
+#creating an interactive plot for graph1
+ggplotly(graph1)
+
+
+#working to try and replicate the above function but with creating a plot_ly chart. The code is not working yet. This is to see if there is a difference in speed between the two options
 
 plotly_creation <- function(df, colName) {
   ndf <- df %>%
     filter(!is.na(df[[colName]])) 
   ndf %>% 
     group_by(f_zcohort, ndf[[colName]]) %>%
-    summarize(mean_danow = mean(danow, na.rm = TRUE), .groups = "keep") %>% 
+    summarize(mean_danow = mean(danow, na.rm = TRUE)) %>% 
     plot_ly(
       x = ~f_zcohort,
       y = ~mean_danow,
       color = ~ndf[[colName]],
       type = "bar"
-    ) %>%
-    layout(
-      yaxis = list(range = c(1, 5)),
-      colorway = c("#1F4388", "#83C7BC", "#1E355E", "#6A86B8", "#A93439", "#CE3162", "#E57D3A", "#4EA585", "#BBB332", "#E8D77E")
-    )
+     ) %>%
+     layout(
+       yaxis = list(range = c(1, 5)),
+       colorway = c("#1F4388", "#83C7BC", "#1E355E", "#6A86B8", "#A93439", "#CE3162", "#E57D3A", "#4EA585", "#BBB332", "#E8D77E")
+     )
 }
-A <- plotly_creation(now_update2,"f_xwrk2020soc1") 
+Chart1 <- plotly_creation(now_update2,"f_xwrk2020soc1") 
 

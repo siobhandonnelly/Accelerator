@@ -10,7 +10,6 @@ library(usethis)
 library(ggplot2)
 library(dplyr)
 library(plotly)
-?use_github
 
 # use_github(protocol = 'https', auth_token = Sys.getenv("GITHUB_PAT"))
 
@@ -28,6 +27,8 @@ typeof("f_xwrk2020soc1")
 
 nature_of_work$f_xwrk2020soc1 <- factor(nature_of_work$f_xwrk2020soc1, levels = c("Managers, directors and senior officials", "Professional occupations", "Associate professional and technical occupations", "Administrative and secretarial occupations", "Skilled trades occupations", "Caring, leisure and other service occupations", "Sales and customer service occupations", "Process plant and machine operatives", "Elementary occupations"))
 
+
+nature_of_work$f_xwrk2007sic1 <- factor(nature_of_work$f_xwrk2007sic1, levels = c("Agriculture, forestry and fishing", "Mining and quarrying", "Manufacturing", "Electricity, gas, steam and air conditioning supply" , "Water supply; sewerage, waste management and remediation activities", "Construction" , "Wholesale and retail trade; repair of motor vehicles and motorcycles" , "Transportation and storage", "Accommodation and food service activities" , "Information and communication" , "Financial and insurance activities", "Real estate activities", "Professional, scientific and technical activities", "Administrative and support service activities", "Public administration and defence; compulsory social security", "Education", "Human health and social work activities", "Arts, entertainment and recreation", "Other service activities", "Activities of households as employers; undifferentiated goods- and services-producing activities of households for own use", "Activities of extraterritorial organisations and bodies"))
 
 
 nature_of_work$f_xempbasis <- factor(nature_of_work$f_xempbasis, levels = c("On a permanent/open ended contract", "On a fixed-term contract lasting 12 months or longer","On a fixed-term contract lasting less than 12 months","Temping (including supply teaching)","On a zero hours contract","Volunteering","On an internship","Other","Not known"))
@@ -181,15 +182,54 @@ plotly_creation <- function(df, colName) {
     group_by(f_zcohort, ndf[[colName]]) %>%
     summarize(mean_danow = mean(danow, na.rm = TRUE)) %>% 
     plot_ly(
+      data= {summary},
       x = ~f_zcohort,
       y = ~mean_danow,
       color = ~ndf[[colName]],
-      type = "bar"
-     ) %>%
-     layout(
-       yaxis = list(range = c(1, 5)),
-       colorway = c("#1F4388", "#83C7BC", "#1E355E", "#6A86B8", "#A93439", "#CE3162", "#E57D3A", "#4EA585", "#BBB332", "#E8D77E")
-     )
+      type = "bar",
+      showlegend = FALSE) %>%
+    hide_colorbar() %>%
+    suppressWarnings()
+  
 }
-Chart1 <- plotly_creation(now_update2,"f_xwrk2020soc1") 
+Graph1 <- plotly_creation(now_update2,"f_xwrk2020soc1") 
 
+
+#creating the chart by itself is working but not in the function, but we are missing a group in the chart?
+ndf_soc <- now_update2 %>% 
+  group_by(f_zcohort, f_xwrk2020soc1) %>%
+  summarise(mean_danow = median(danow, na.rm = TRUE))
+
+ Chart1 <- plot_ly(
+  data= {ndf_soc},
+  x = ~f_zcohort,
+  y = ~mean_danow,
+  color = ~f_xwrk2020soc1,
+  type = "bar",
+  showlegend = FALSE) %>%
+  layout(
+    yaxis = list(title = 'Mean Fairwork score'),
+    xaxis = list(title = 'Acedemic Year',tickvals = list(2017/18, 2018/19)),
+    title = "Mean Fairwork score by graduates SOC major group") %>%
+  hide_colorbar() %>%
+  suppressWarnings()
+
+ 
+ #creatin the chart for SIC
+ ndf_sic <- now_update2 %>% 
+   group_by(f_zcohort, f_xwrk2007sic1) %>%
+   summarise(mean_danow = median(danow, na.rm = TRUE))
+ 
+ Chart2 <- plot_ly(
+   data= {ndf_sic},
+   x = ~f_zcohort,
+   y = ~mean_danow,
+   color = ~f_xwrk2007sic1,
+   type = "bar",
+   showlegend = FALSE) %>%
+   layout(
+     yaxis = list(title = 'Mean Fairwork score'),
+     xaxis = list(title = 'Acedemic Year',tickvals = list(2017/18, 2018/19)),
+     title = "Mean Fairwork score by graduates SIC major group") %>%
+   hide_colorbar() %>%
+   suppressWarnings()

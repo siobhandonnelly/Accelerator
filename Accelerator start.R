@@ -32,9 +32,9 @@ nature_of_work$f_xwrk2007sic1 <- factor(nature_of_work$f_xwrk2007sic1, levels = 
 
 
 nature_of_work$f_xempbasis <- factor(nature_of_work$f_xempbasis, levels = c("On a permanent/open ended contract", "On a fixed-term contract lasting 12 months or longer","On a fixed-term contract lasting less than 12 months","Temping (including supply teaching)","On a zero hours contract","Volunteering","On an internship","Other","Not known"))
+#nature_of_work$f_providername <- factor(nature_of_work$f_providername, levels = c("AA School of Architecture","ACM Guildford Limited","AECC University College","Abertay University","Aberystwyth University","Academy of Live and Recorded Arts","All Nations Christian College","Anglia Ruskin University","Apex College London","Arden University","Arts Educational Schools","Aston University","BIMM Limited","Bangor University","Bath Spa University","Birkbeck College","Birmingham City University","Bishop Grosseteste University","Bloomsbury Institute","Bournemouth University","Bristol Baptist College","Brunel University London","Buckinghamshire New University","Cambridge Arts and Sciences Limited","Canterbury Christ Church University","Cardiff Metropolitan University","Cardiff University","Chicken Shed Theatre Company","City and Guilds of London Art School","City, University of London","Cliff College","Conservatoire for Dance and Drama","Courtauld Institute of Art","Coventry University","Cranfield University","De Montfort University","Edge Hill University","Edinburgh Napier University","Empire College London Limited","Falmouth University","ForMission Ltd","Futureworks","Glasgow Caledonian University","Glasgow School of Art","Glyndŵr University","Goldsmiths College","Gower College Swansea","Grŵµp Llandrillo Menai","Grŵµp NPTC Group","Guildhall School of Music and Drama","Harper Adams University","Hartpury University","Heriot-Watt University","ICOM","ICON College of Technology and Management","Imperial College of Science, Technology and Medicine","Institute of Contemporary Music Performance","Istituto Marangoni Limited","Keele University","Kensington College of Business","King's College London","Kingston University","LCCM AU UK Limited","Leeds Arts University","Leeds Beckett University","Leeds Conservatoire","Leeds Trinity University","Liverpool Hope University","Liverpool John Moores University","Liverpool School of Tropical Medicine","London Business School","London Churchill College Ltd","London Metropolitan University","London School of Academics Ltd","London School of Commerce & IT Limited","London School of Economics and Political Science","London School of Hygiene and Tropical Medicine","London School of Management Education","London South Bank University","Loughborough University","Luther King House Educational Trust","Matrix College of Counselling and Psychotherapy Ltd","Mattersey Hall","Met Film School Limited","Middlesex University","Millennium Performing Arts Ltd","Mont Rose College of Management and Sciences","Moorlands College","Mountview Academy of Theatre Arts","Nazarene Theological College","Nelson College London Ltd","New College of the Humanities","Newcastle University","Newman University","Norland College","Northern College of Acupuncture","Norwich University of the Arts","Oxford Brookes University","Oxford Business College","Pearson College","Plymouth College of Art","Point Blank Music School","Queen Margaret University, Edinburgh","Queen Mary University of London","Queen's University Belfast","Ravensbourne University London","Regent College","Regent's University London","Regents Theological College","Richmond, The American International University in London","Robert Gordon University","Roehampton University","Rose Bruford College of Theatre and Performance","Royal Academy of Dance","Royal Academy of Music","Royal Agricultural University","Royal College of Art","Royal College of Music","Royal Conservatoire of Scotland","Royal Holloway and Bedford New College","Royal Northern College of Music","SAE Education Limited","SOAS University of London","SRUC","Sheffield Hallam University","Slough Borough Council","Solent University","St George's, University of London","St Mary's University College","St Mary's University, Twickenham","St Mellitus College","St Nicholas Montessori Training Limited","Staffordshire University","Stranmillis University College","Swansea University","Teesside University","The Arts University Bournemouth","The City College","The College of Integrated Chinese Medicine","The Institute of Cancer Research","The Islamic College","The Liverpool Institute for Performing Arts","The London Institute of Banking & Finance","The London School of Architecture","The Manchester Metropolitan University","The Markfield Institute of Higher Education","The Metanoia Institute","The National Film and Television School","The Nottingham Trent University","The Open University","The Royal Central School of Speech and Drama","The Royal Veterinary College","The Salvation Army","The Sherwood Psychotherapy Training Institute Limited","The University College of Osteopathy","The University of Aberdeen","The University of Bath","The University of Birmingham","The University of Bolton","The University of Bradford","The University of Brighton","The University of Bristol","The University of Buckingham","The University of Cambridge")
 
-
-
+nature_of_work$f_providername <- factor(nature_of_work$f_providername)
 nature_of_work <- nature_of_work %>%
   mutate(study_mode = case_when(f_xqmode01 %in% ("Part-time") ~ 2 ,
                                    f_xqmode01 %in% ("Full-time") ~ 1 
@@ -233,3 +233,19 @@ ndf_soc <- now_update2 %>%
      title = "Mean Fairwork score by graduates SIC major group") %>%
    hide_colorbar() %>%
    suppressWarnings()
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

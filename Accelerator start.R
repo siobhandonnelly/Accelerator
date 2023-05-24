@@ -24,9 +24,7 @@ nature_of_work$f_zcohort <- as.factor(nature_of_work$f_zcohort)
 
 #Attempting to order the SOCcode variable
 typeof("f_xwrk2020soc1")
-
-nature_of_work$f_xwrk2020soc1 <- factor(nature_of_work$f_xwrk2020soc1, levels = c("Managers, directors and senior officials", "Professional occupations", "Associate professional and technical occupations", "Administrative and secretarial occupations", "Skilled trades occupations", "Caring, leisure and other service occupations", "Sales and customer service occupations", "Process plant and machine operatives", "Elementary occupations"))
-
+nature_of_work$f_xwrk2020soc1 <- factor(nature_of_work$f_xwrk2020soc1, levels = c("Managers, directors and senior officials", "Professional occupations", "Associate professional occupations", "Administrative and secretarial occupations", "Skilled trades occupations", "Caring, leisure and other service occupations", "Sales and customer service occupations", "Process, plant and machine operatives", "Elementary occupations"))
 
 nature_of_work$f_xwrk2007sic1 <- factor(nature_of_work$f_xwrk2007sic1, levels = c("Agriculture, forestry and fishing", "Mining and quarrying", "Manufacturing", "Electricity, gas, steam and air conditioning supply" , "Water supply; sewerage, waste management and remediation activities", "Construction" , "Wholesale and retail trade; repair of motor vehicles and motorcycles" , "Transportation and storage", "Accommodation and food service activities" , "Information and communication" , "Financial and insurance activities", "Real estate activities", "Professional, scientific and technical activities", "Administrative and support service activities", "Public administration and defence; compulsory social security", "Education", "Human health and social work activities", "Arts, entertainment and recreation", "Other service activities", "Activities of households as employers; undifferentiated goods- and services-producing activities of households for own use", "Activities of extraterritorial organisations and bodies"))
 
@@ -89,7 +87,7 @@ plot_creation <- function(df, colName) {
                     fill = ndf[[colName]]),
       position = position_dodge(),
     ) +
-        coord_cartesian(ylim=c(1,5)) +
+       # coord_cartesian(ylim=c(1,5)) +
         scale_fill_manual(values = c("#1F4388", 
                                  "#83C7BC", 
                                  "#1E355E",
